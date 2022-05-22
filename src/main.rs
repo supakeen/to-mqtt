@@ -40,9 +40,18 @@ fn make_cli_weather() -> clap::Command<'static> {
     clap::command!("weather")
         .about("Weather related data and lookups")
         .subcommand_required(true)
-        .arg(clap::arg!(--lat "Location latitude").required(true))
-        .arg(clap::arg!(--lon "Location longitude").required(true))
+        .arg(
+            clap::arg!(--lat <lat> "Location latitude")
+                .required(true)
+                .validator(|s| s.parse::<f32>()),
+        )
+        .arg(
+            clap::arg!(--lon <lon> "Location longitude")
+                .required(true)
+                .validator(|s| s.parse::<f32>()),
+        )
         .subcommand(make_cli_weather_current_temperature())
+        .subcommand(make_cli_weather_historical_temperature())
 }
 
 #[test]
